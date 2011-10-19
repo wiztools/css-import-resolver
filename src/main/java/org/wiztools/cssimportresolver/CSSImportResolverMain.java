@@ -18,6 +18,9 @@ public class CSSImportResolverMain {
     
     private static void printHelp(PrintStream out) {
         out.println("Usage: java -jar css-import-resolver-NN-jar-with-dependencies.jar [OPTS] file1 file2 ...");
+        out.println("Where OPTS can be:");
+        out.println("\t-c\tCharset to use for reading and writing CSS. Defaults to UTF-8.");
+        out.println("\t-o\tWrite the out CSS to specified file.");
     }
     
     public static void main(String[] arg) throws IOException {
