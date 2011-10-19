@@ -13,7 +13,7 @@ import org.wiztools.commons.FileUtil;
  */
 class CSSImportResolver {
     
-    private static final Pattern RE = Pattern.compile("@import\\s+url\\(('|\")?\\s*([^)^'^\"]*)('|\")?\\s*\\)\\s*;");
+    private static final Pattern RE = Pattern.compile("@import\\s+url\\(\\s*('|\")?([^)^'^\"]*)('|\")?\\s*\\)\\s*;");
     
     static void resolve(File file, Charset charset, StringBuffer sb) throws IOException {
         final String fileContent = FileUtil.getContentAsString(file, charset);
