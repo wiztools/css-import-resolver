@@ -1,0 +1,10 @@
+h1 {color: gray;}
+
+@import url(a.css);
+
+h2 {color: red;}
+
+@import url(b.css);
+
+h3 {color: green;}
+
