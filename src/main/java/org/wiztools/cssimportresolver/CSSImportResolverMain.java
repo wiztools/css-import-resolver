@@ -23,6 +23,7 @@ public class CSSImportResolverMain {
         out.println("\t-c\tCharset to use for reading and writing CSS. Defaults to UTF-8.");
         out.println("\t-o\tWrite the out CSS to specified file.");
         out.println("\t-f\tForgiving. When corresponding CSS file not found, ignore.");
+        out.println("\t-b\tBase-dir. Directories to search for linked CSS.");
     }
     
     public static void main(String[] arg) throws IOException {
