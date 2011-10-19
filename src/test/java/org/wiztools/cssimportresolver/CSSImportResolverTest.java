@@ -2,6 +2,7 @@ package org.wiztools.cssimportresolver;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class CSSImportResolverTest {
         File file = new File("src/test/resources/main.css");
         Charset charset = Charsets.UTF_8;
         StringBuffer sb = new StringBuffer();
-        CSSImportResolver.resolve(file, charset, sb);
+        CSSImportResolver.resolve(file, charset, sb, true, Collections.EMPTY_LIST);
 
         String expectedResult = FileUtil.getContentAsString(
                 new File("src/test/resources/expOutput.css"), Charsets.UTF_8);
