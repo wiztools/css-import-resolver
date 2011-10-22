@@ -1,6 +1,7 @@
 package org.wiztools.cssimportresolver;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import org.junit.After;
@@ -50,6 +51,49 @@ public class CSSImportResolverTest {
 
         String expectedResult = FileUtil.getContentAsString(
                 new File("src/test/resources/expOutput.css"), Charsets.UTF_8);
+        System.out.println(sb);
+        assertEquals(expectedResult, sb.toString());
+    }
+    
+    @Test
+    public void testForgiving() throws Exception {
+        System.out.println("forgiving");
+        File file = new File("src/test/resources/forgiving.css");
+        Charset charset = Charsets.UTF_8;
+        StringBuffer sb = new StringBuffer();
+        CSSImportResolver.resolve(file, charset, sb, true, Collections.EMPTY_LIST);
+
+        String expectedResult = FileUtil.getContentAsString(
+                new File("src/test/resources/expOutputForgiving.css"), Charsets.UTF_8);
+        System.out.println(sb);
+        assertEquals(expectedResult, sb.toString());
+    }
+    
+    @Test
+    public void testNotForgiving() throws Exception {
+        System.out.println("notForgiving");
+        File file = new File("src/test/resources/forgiving.css");
+        Charset charset = Charsets.UTF_8;
+        StringBuffer sb = new StringBuffer();
+        try {
+            CSSImportResolver.resolve(file, charset, sb, false, Collections.EMPTY_LIST);
+            fail("Forgiving is false. Should not come here!");
+        }
+        catch(FileNotFoundException ex) {
+            // should not come here!
+        }
+    }
+    
+    @Test
+    public void testRecursive() throws Exception {
+        System.out.println("recursive");
+        File file = new File("src/test/resources/recursive1.css");
+        Charset charset = Charsets.UTF_8;
+        StringBuffer sb = new StringBuffer();
+        CSSImportResolver.resolve(file, charset, sb, true, Collections.EMPTY_LIST);
+
+        String expectedResult = FileUtil.getContentAsString(
+                new File("src/test/resources/expOutputRecursive.css"), Charsets.UTF_8);
         System.out.println(sb);
         assertEquals(expectedResult, sb.toString());
     }

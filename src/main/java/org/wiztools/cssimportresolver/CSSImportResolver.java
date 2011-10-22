@@ -18,12 +18,18 @@ class CSSImportResolver {
     
     private static final Pattern RE = Pattern.compile("@import\\s+url\\(\\s*('|\")?([^)^'^\"]*)('|\")?\\s*\\)\\s*;");
     
-    private static String getFileContent(String cssFileName, List<File> baseDirs, Charset c)
-            throws FileNotFoundException, IOException{
+    private static void resolveSubCSS(String cssFileName,
+            Charset c,
+            StringBuffer sb,
+            boolean forgiving,
+            List<File> baseDirs,
+            Matcher m) throws FileNotFoundException, IOException{
         for(File dir: baseDirs) {
             File f = new File(dir, cssFileName);
             if(f.exists()) {
-                return FileUtil.getContentAsString(f, c);
+                m.appendReplacement(sb, "");
+                resolve(f, c, sb, forgiving, baseDirs);
+                return;
             }
         }
         throw new FileNotFoundException("File not found: " + cssFileName);
@@ -43,9 +49,9 @@ class CSSImportResolver {
                 ArrayList<File> l = new ArrayList<File>();
                 l.add(file.getParentFile());
                 l.addAll(baseDirs);
-                
-                final String importedContent = getFileContent(importedFileName, l, charset);;
-                m.appendReplacement(sb, importedContent);
+
+                resolveSubCSS(importedFileName, charset, sb, forgiving, l, m);
+                // m.appendReplacement(sb, importedContent);
             }
             catch(FileNotFoundException ex) {
                 if(forgiving) {
