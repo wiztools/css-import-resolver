@@ -46,13 +46,13 @@ public class CSSImportResolverTest {
         System.out.println("resolve");
         File file = new File("src/test/resources/main.css");
         Charset charset = Charsets.UTF_8;
-        StringBuffer sb = new StringBuffer();
-        CSSImportResolver.resolve(file, charset, sb, true, Collections.EMPTY_LIST);
+        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST);
+        resolver.resolve(file);
 
         String expectedResult = FileUtil.getContentAsString(
                 new File("src/test/resources/expOutput.css"), Charsets.UTF_8);
-        System.out.println(sb);
-        assertEquals(expectedResult, sb.toString());
+        System.out.println(resolver);
+        assertEquals(expectedResult, resolver.toString());
     }
     
     @Test
@@ -60,13 +60,13 @@ public class CSSImportResolverTest {
         System.out.println("forgiving");
         File file = new File("src/test/resources/forgiving.css");
         Charset charset = Charsets.UTF_8;
-        StringBuffer sb = new StringBuffer();
-        CSSImportResolver.resolve(file, charset, sb, true, Collections.EMPTY_LIST);
+        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST);
+        resolver.resolve(file);
 
         String expectedResult = FileUtil.getContentAsString(
                 new File("src/test/resources/expOutputForgiving.css"), Charsets.UTF_8);
-        System.out.println(sb);
-        assertEquals(expectedResult, sb.toString());
+        System.out.println(resolver);
+        assertEquals(expectedResult, resolver.toString());
     }
     
     @Test
@@ -74,9 +74,9 @@ public class CSSImportResolverTest {
         System.out.println("notForgiving");
         File file = new File("src/test/resources/forgiving.css");
         Charset charset = Charsets.UTF_8;
-        StringBuffer sb = new StringBuffer();
         try {
-            CSSImportResolver.resolve(file, charset, sb, false, Collections.EMPTY_LIST);
+            CSSImportResolver resolver = new CSSImportResolver(charset, false, Collections.EMPTY_LIST);
+            resolver.resolve(file);
             fail("Forgiving is false. Should not come here!");
         }
         catch(FileNotFoundException ex) {
@@ -89,12 +89,12 @@ public class CSSImportResolverTest {
         System.out.println("recursive");
         File file = new File("src/test/resources/recursive1.css");
         Charset charset = Charsets.UTF_8;
-        StringBuffer sb = new StringBuffer();
-        CSSImportResolver.resolve(file, charset, sb, true, Collections.EMPTY_LIST);
+        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST);
+        resolver.resolve(file);
 
         String expectedResult = FileUtil.getContentAsString(
                 new File("src/test/resources/expOutputRecursive.css"), Charsets.UTF_8);
-        System.out.println(sb);
-        assertEquals(expectedResult, sb.toString());
+        System.out.println(resolver);
+        assertEquals(expectedResult, resolver.toString());
     }
 }

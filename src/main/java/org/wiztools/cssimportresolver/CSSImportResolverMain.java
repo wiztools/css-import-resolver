@@ -68,20 +68,19 @@ public class CSSImportResolverMain {
             }
         }
         
-        // Output StringBuffer
-        final StringBuffer sb = new StringBuffer();
-        
+        // Resolve!
+        CSSImportResolver resolver = new CSSImportResolver(charset, isForgiving, baseDirs);
         for(String fileName: options.nonOptionArguments()) {
             File cssFile = new File(fileName);
-            CSSImportResolver.resolve(cssFile, charset, sb, isForgiving, baseDirs);
+            resolver.resolve(cssFile);
         }
         
         if(options.has("o")) {
             File outFile = new File(options.valueOf("o").toString());
-            FileUtil.writeString(outFile, sb.toString(), charset);
+            FileUtil.writeString(outFile, resolver.toString(), charset);
         }
         else {
-            System.out.write(sb.toString().getBytes(charset));
+            System.out.write(resolver.toString().getBytes(charset));
         }
     }
 }

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,28 +19,36 @@ class CSSImportResolver {
     
     private static final Pattern RE = Pattern.compile("@import\\s+url\\(\\s*('|\")?([^)^'^\"]*)('|\")?\\s*\\)\\s*;");
     
-    private static void resolveSubCSS(String cssFileName,
-            Charset c,
-            StringBuffer sb,
-            boolean forgiving,
+    private final Charset charset;
+    private final boolean forgiving;
+    private final List<File> baseDirs;
+    private final StringBuffer sb = new StringBuffer();
+
+    public CSSImportResolver(Charset charset, boolean forgiving, List<File> baseDirs) {
+        this.charset = charset;
+        this.forgiving = forgiving;
+        this.baseDirs = Collections.unmodifiableList(baseDirs);
+    }
+    
+    private void resolveSubCSS(String cssFileName,
             List<File> baseDirs,
             Matcher m) throws FileNotFoundException, IOException{
         for(File dir: baseDirs) {
             File f = new File(dir, cssFileName);
             if(f.exists()) {
                 m.appendReplacement(sb, "");
-                resolve(f, c, sb, forgiving, baseDirs);
+                resolve(f);
                 return;
             }
         }
         throw new FileNotFoundException("File not found: " + cssFileName);
     }
     
-    static void resolve(File file,
-            Charset charset,
-            StringBuffer sb,
-            boolean forgiving,
-            List<File> baseDirs) throws IOException {
+    void resolve(File file) throws IOException {
+        resolve(file, baseDirs);
+    }
+    
+    private void resolve(File file, List<File> baseDirs) throws IOException {
         final String fileContent = FileUtil.getContentAsString(file, charset);
         
         Matcher m = RE.matcher(fileContent);
@@ -50,7 +59,7 @@ class CSSImportResolver {
                 l.add(file.getParentFile());
                 l.addAll(baseDirs);
 
-                resolveSubCSS(importedFileName, charset, sb, forgiving, l, m);
+                resolveSubCSS(importedFileName, l, m);
                 // m.appendReplacement(sb, importedContent);
             }
             catch(FileNotFoundException ex) {
@@ -67,4 +76,11 @@ class CSSImportResolver {
         }
         m.appendTail(sb);
     }
+
+    @Override
+    public String toString() {
+        return sb.toString();
+    }
+    
+    
 }
