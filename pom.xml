@@ -4,16 +4,16 @@
 
     <groupId>org.wiztools</groupId>
     <artifactId>css-import-resolver</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.0</version>
     <packaging>jar</packaging>
 
     <name>css-import-resolver</name>
     <url>http://wiztools.org</url>
     
     <scm>
-        <connection>scm:svn:http://wiztools.googlecode.com/svn/css-import-resolver/trunk/</connection>
-        <developerConnection>scm:svn:https://wiztools.googlecode.com/svn/css-import-resolver/trunk/</developerConnection>
-        <url>http://code.google.com/p/wiztools/source/browse/</url>
+        <connection>scm:svn:http://wiztools.googlecode.com/svn/css-import-resolver/tags/css-import-resolver-0.3.0</connection>
+        <developerConnection>scm:svn:https://wiztools.googlecode.com/svn/css-import-resolver/tags/css-import-resolver-0.3.0</developerConnection>
+        <url>scm:svn:https://wiztools.googlecode.com/svn/css-import-resolver/tags/css-import-resolver-0.3.0</url>
     </scm>
     
     <build>
