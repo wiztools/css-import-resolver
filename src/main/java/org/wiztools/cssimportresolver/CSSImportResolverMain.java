@@ -22,13 +22,13 @@ public class CSSImportResolverMain {
         out.println("Where OPTS can be:");
         out.println("\t-c\tCharset to use for reading and writing CSS. Defaults to UTF-8.");
         out.println("\t-o\tWrite the out CSS to specified file.");
-        out.println("\t-f\tForgiving. When corresponding CSS file not found, ignore.");
-        out.println("\t-b\tBase-dir. Directories to search for linked CSS.");
+        out.println("\t-l\tLenient: when imported CSS file not found, ignore.");
+        out.println("\t-b\tBase-dir: directories to search for linked CSS.");
     }
     
     public static void main(String[] arg) throws IOException {
         // Parse the commandline:
-        OptionParser parser = new OptionParser("hc:o:fb:");
+        OptionParser parser = new OptionParser("hlc:o:b:");
         OptionSet options = parser.parse(arg);
         
         if(options.has("h")) {
@@ -49,9 +49,9 @@ public class CSSImportResolverMain {
             charset = Charset.forName(options.valueOf("c").toString());
         }
         
-        boolean isForgiving = false;
-        if(options.has("f")) {
-            isForgiving = true;
+        boolean isLenient = false;
+        if(options.has("l")) {
+            isLenient = true;
         }
         
         List<File> baseDirs = new ArrayList<File>();
@@ -69,7 +69,7 @@ public class CSSImportResolverMain {
         }
         
         // Resolve!
-        CSSImportResolver resolver = new CSSImportResolver(charset, isForgiving, baseDirs);
+        CSSImportResolver resolver = new CSSImportResolver(charset, isLenient, baseDirs);
         for(String fileName: options.nonOptionArguments()) {
             File cssFile = new File(fileName);
             resolver.resolve(cssFile);

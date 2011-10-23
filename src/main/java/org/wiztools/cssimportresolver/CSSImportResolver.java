@@ -20,13 +20,13 @@ class CSSImportResolver {
     private static final Pattern RE = Pattern.compile("@import\\s+url\\(\\s*('|\")?([^)^'^\"]*)('|\")?\\s*\\)\\s*;");
     
     private final Charset charset;
-    private final boolean forgiving;
+    private final boolean isLenient;
     private final List<File> baseDirs;
     private final StringBuffer sb = new StringBuffer();
 
-    public CSSImportResolver(Charset charset, boolean forgiving, List<File> baseDirs) {
+    public CSSImportResolver(Charset charset, boolean isLenient, List<File> baseDirs) {
         this.charset = charset;
-        this.forgiving = forgiving;
+        this.isLenient = isLenient;
         this.baseDirs = Collections.unmodifiableList(baseDirs);
     }
     
@@ -63,7 +63,7 @@ class CSSImportResolver {
                 // m.appendReplacement(sb, importedContent);
             }
             catch(FileNotFoundException ex) {
-                if(forgiving) {
+                if(isLenient) {
                     m.appendReplacement(sb, m.group());
                     
                     // Log the error in STDERR
@@ -81,6 +81,4 @@ class CSSImportResolver {
     public String toString() {
         return sb.toString();
     }
-    
-    
 }
