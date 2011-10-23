@@ -2,6 +2,7 @@ package org.wiztools.cssimportresolver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import org.junit.After;
@@ -96,6 +97,20 @@ public class CSSImportResolverTest {
 
         String expectedResult = FileUtil.getContentAsString(
                 new File("src/test/resources/expOutputRecursive.css"), Charsets.UTF_8);
+        System.out.println(resolver);
+        assertEquals(expectedResult, resolver.toString());
+    }
+    
+    @Test
+    public void testHttpUrl() throws IOException {
+        System.out.println("httpUrl");
+        File file = new File("src/test/resources/http-url.css");
+        Charset charset = Charsets.UTF_8;
+        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST, NOT_QUIET);
+        resolver.resolve(file);
+
+        String expectedResult = FileUtil.getContentAsString(
+                new File("src/test/resources/expOutputHttp.css"), Charsets.UTF_8);
         System.out.println(resolver);
         assertEquals(expectedResult, resolver.toString());
     }

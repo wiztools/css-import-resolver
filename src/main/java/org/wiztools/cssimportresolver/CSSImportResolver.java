@@ -21,7 +21,7 @@ class CSSImportResolver {
     
     private final Charset charset;
     private final boolean isLenient;
-    private final boolean isQuiet;
+    private final boolean isVerbose;
     private final List<File> baseDirs;
     private final StringBuffer sb = new StringBuffer();
 
@@ -31,7 +31,7 @@ class CSSImportResolver {
             boolean isQuiet) {
         this.charset = charset;
         this.isLenient = isLenient;
-        this.isQuiet = isQuiet;
+        this.isVerbose = !isQuiet;
         this.baseDirs = Collections.unmodifiableList(baseDirs);
     }
     
@@ -59,6 +59,16 @@ class CSSImportResolver {
         Matcher m = RE.matcher(fileContent);
         while(m.find()) {
             final String importedFileName = m.group(2);
+            { // check if http url:
+                final String lowered = importedFileName.toLowerCase();
+                if(lowered.startsWith("http://")
+                        || lowered.startsWith("https://")) {
+                    if(isVerbose) {
+                        System.err.println("HTTP url not processed: " + importedFileName);
+                    }
+                    continue;
+                }
+            }
             try{
                 ArrayList<File> l = new ArrayList<File>();
                 l.add(file.getParentFile());
@@ -72,7 +82,7 @@ class CSSImportResolver {
                     m.appendReplacement(sb, m.group());
                     
                     // Log the error in STDERR
-                    if(!isQuiet) {
+                    if(isVerbose) {
                         System.err.println(ex.getMessage());
                     }
                 }
