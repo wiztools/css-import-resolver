@@ -22,9 +22,9 @@ public class CSSImportResolverMain {
                 +   "            [OPTS] file1 file2 ...");
         out.println("Where OPTS can be:");
         out.println("  -c  : Charset to use for reading and writing CSS. Defaults to UTF-8.");
-        out.println("  -o  : Write the out-CSS to specified file. When not specified, output\n"
+        out.println("  -o  : Write the out-CSS to specified file. When not specified, output is\n"
                 +   "        written to STDOUT.");
-        out.println("  -l  : Lenient mode: when imported CSS file not found, ignore and continue.");
+        out.println("  -l  : Lenient: when imported-CSS file is not found, ignore and continue.");
         out.println("  -b  : Base-dir: directories to search for linked CSS.");
         out.println("  -q  : Quiet. When not specified, verbose output written to STDERR.");
     }
