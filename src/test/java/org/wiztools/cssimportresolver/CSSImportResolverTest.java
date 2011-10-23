@@ -37,6 +37,8 @@ public class CSSImportResolverTest {
     @After
     public void tearDown() {
     }
+    
+    private static final boolean NOT_QUIET = false;
 
     /**
      * Test of resolve method, of class CSSImportResolver.
@@ -46,7 +48,7 @@ public class CSSImportResolverTest {
         System.out.println("resolve");
         File file = new File("src/test/resources/main.css");
         Charset charset = Charsets.UTF_8;
-        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST);
+        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST, NOT_QUIET);
         resolver.resolve(file);
 
         String expectedResult = FileUtil.getContentAsString(
@@ -60,7 +62,7 @@ public class CSSImportResolverTest {
         System.out.println("forgiving");
         File file = new File("src/test/resources/forgiving.css");
         Charset charset = Charsets.UTF_8;
-        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST);
+        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST, NOT_QUIET);
         resolver.resolve(file);
 
         String expectedResult = FileUtil.getContentAsString(
@@ -75,7 +77,7 @@ public class CSSImportResolverTest {
         File file = new File("src/test/resources/forgiving.css");
         Charset charset = Charsets.UTF_8;
         try {
-            CSSImportResolver resolver = new CSSImportResolver(charset, false, Collections.EMPTY_LIST);
+            CSSImportResolver resolver = new CSSImportResolver(charset, false, Collections.EMPTY_LIST, NOT_QUIET);
             resolver.resolve(file);
             fail("Forgiving is false. Should not come here!");
         }
@@ -89,7 +91,7 @@ public class CSSImportResolverTest {
         System.out.println("recursive");
         File file = new File("src/test/resources/recursive1.css");
         Charset charset = Charsets.UTF_8;
-        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST);
+        CSSImportResolver resolver = new CSSImportResolver(charset, true, Collections.EMPTY_LIST, NOT_QUIET);
         resolver.resolve(file);
 
         String expectedResult = FileUtil.getContentAsString(

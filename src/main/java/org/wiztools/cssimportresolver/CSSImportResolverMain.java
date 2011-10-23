@@ -18,17 +18,20 @@ import org.wiztools.commons.FileUtil;
 public class CSSImportResolverMain {
     
     private static void printHelp(PrintStream out) {
-        out.println("Usage: java -jar css-import-resolver-NN-jar-with-dependencies.jar [OPTS] file1 file2 ...");
+        out.println("Usage: java -jar css-import-resolver-NN-jar-with-dependencies.jar \\\n"
+                +   "            [OPTS] file1 file2 ...");
         out.println("Where OPTS can be:");
-        out.println("\t-c\tCharset to use for reading and writing CSS. Defaults to UTF-8.");
-        out.println("\t-o\tWrite the out CSS to specified file.");
-        out.println("\t-l\tLenient: when imported CSS file not found, ignore.");
-        out.println("\t-b\tBase-dir: directories to search for linked CSS.");
+        out.println("  -c  : Charset to use for reading and writing CSS. Defaults to UTF-8.");
+        out.println("  -o  : Write the out-CSS to specified file. When not specified, output\n"
+                +   "        written to STDOUT.");
+        out.println("  -l  : Lenient mode: when imported CSS file not found, ignore and continue.");
+        out.println("  -b  : Base-dir: directories to search for linked CSS.");
+        out.println("  -q  : Quiet. When not specified, verbose output written to STDERR.");
     }
     
     public static void main(String[] arg) throws IOException {
         // Parse the commandline:
-        OptionParser parser = new OptionParser("hlc:o:b:");
+        OptionParser parser = new OptionParser("hlqc:o:b:");
         OptionSet options = parser.parse(arg);
         
         if(options.has("h")) {
@@ -49,10 +52,8 @@ public class CSSImportResolverMain {
             charset = Charset.forName(options.valueOf("c").toString());
         }
         
-        boolean isLenient = false;
-        if(options.has("l")) {
-            isLenient = true;
-        }
+        final boolean isLenient = options.has("l")? true: false;
+        final boolean isQuiet = options.has("q")? true: false;
         
         List<File> baseDirs = new ArrayList<File>();
         if(options.has("b")) {
@@ -69,7 +70,8 @@ public class CSSImportResolverMain {
         }
         
         // Resolve!
-        CSSImportResolver resolver = new CSSImportResolver(charset, isLenient, baseDirs);
+        final CSSImportResolver resolver = new CSSImportResolver(
+                charset, isLenient, baseDirs, isQuiet);
         for(String fileName: options.nonOptionArguments()) {
             File cssFile = new File(fileName);
             resolver.resolve(cssFile);

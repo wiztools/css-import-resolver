@@ -21,12 +21,17 @@ class CSSImportResolver {
     
     private final Charset charset;
     private final boolean isLenient;
+    private final boolean isQuiet;
     private final List<File> baseDirs;
     private final StringBuffer sb = new StringBuffer();
 
-    public CSSImportResolver(Charset charset, boolean isLenient, List<File> baseDirs) {
+    public CSSImportResolver(Charset charset,
+            boolean isLenient,
+            List<File> baseDirs,
+            boolean isQuiet) {
         this.charset = charset;
         this.isLenient = isLenient;
+        this.isQuiet = isQuiet;
         this.baseDirs = Collections.unmodifiableList(baseDirs);
     }
     
@@ -67,7 +72,9 @@ class CSSImportResolver {
                     m.appendReplacement(sb, m.group());
                     
                     // Log the error in STDERR
-                    System.err.println(ex.getMessage());
+                    if(!isQuiet) {
+                        System.err.println(ex.getMessage());
+                    }
                 }
                 else {
                     throw ex;
