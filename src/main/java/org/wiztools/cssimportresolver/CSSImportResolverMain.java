@@ -39,7 +39,7 @@ public class CSSImportResolverMain {
             return;
         }
         
-        List<String> cssFiles = options.nonOptionArguments();
+        List cssFiles = options.nonOptionArguments();
         
         if(cssFiles.isEmpty()) {
             System.err.println("No input given!");
@@ -52,8 +52,8 @@ public class CSSImportResolverMain {
             charset = Charset.forName(options.valueOf("c").toString());
         }
         
-        final boolean isLenient = options.has("l")? true: false;
-        final boolean isQuiet = options.has("q")? true: false;
+        final boolean isLenient = options.has("l");
+        final boolean isQuiet = options.has("q");
         
         List<File> baseDirs = new ArrayList<File>();
         if(options.has("b")) {
@@ -72,8 +72,8 @@ public class CSSImportResolverMain {
         // Resolve!
         final CSSImportResolver resolver = new CSSImportResolver(
                 charset, isLenient, baseDirs, isQuiet);
-        for(String fileName: options.nonOptionArguments()) {
-            File cssFile = new File(fileName);
+        for(Object fileName: options.nonOptionArguments()) {
+            File cssFile = new File((String)fileName);
             resolver.resolve(cssFile);
         }
         
