@@ -73,7 +73,7 @@ public class CSSImportResolverMain {
         final CSSImportResolver resolver = new CSSImportResolver(
                 charset, isLenient, baseDirs, isQuiet);
         for(Object fileName: options.nonOptionArguments()) {
-            File cssFile = new File((String)fileName);
+            File cssFile = new File(String.valueOf(fileName));
             resolver.resolve(cssFile);
         }
         
