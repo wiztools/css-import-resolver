@@ -2,6 +2,10 @@
 
 A tool which parses the CSS @import url() statement and adds the content of the file inline to the CSS. The output is by default written to the STDOUT, or using the -o option written to a file.
 
+This tool is available as part of _"The Joy of Unix in Windows Tool Bundle"_:
+
+[![](http://static.wiztools.org/wiztools-cli-tools.png)](http://cli-bundle.wiztools.org/)
+
 ## Details
 
 In CSS you can refer to other CSS files thus:
